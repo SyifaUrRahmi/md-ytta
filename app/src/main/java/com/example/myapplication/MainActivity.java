@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void regis(View view) {
-        Intent toRegis = new Intent(MainActivity.this, Login.class);
+        Intent toRegis = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(toRegis);
     }
 }
