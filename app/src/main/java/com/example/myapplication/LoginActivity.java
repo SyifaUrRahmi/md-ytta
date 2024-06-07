@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import com.example.myapplication.api.APIService;
 import com.example.myapplication.model.LoginRequest;
 import com.example.myapplication.model.LoginResponse;
 
+import org.json.JSONException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button loginButton;
     private TextView registration;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +77,13 @@ public class LoginActivity extends AppCompatActivity {
                     LoginResponse loginResponse = response.body();
                     if (loginResponse.isSuccess()) {
                         String token = loginResponse.getToken();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        saveToken(token);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                navigateToHome();
+                            }
+                        });
                     } else {
                         Toast.makeText(LoginActivity.this, "Login failed: " + loginResponse.getError(), Toast.LENGTH_SHORT).show();
                     }
@@ -89,5 +97,18 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void saveToken(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("token", token);
+        editor.apply();
+    }
+
+    private void navigateToHome() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
