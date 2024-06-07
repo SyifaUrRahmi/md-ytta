@@ -1,14 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.AddFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragment Add" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="30dp"
+        android:layout_centerVertical="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Post"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edittext"
+                android:hint="Title"
+                android:textSize="15dp"
+                android:padding="12dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"/>
+            <EditText
+                android:id="@+id/et_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your description here"
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
+                android:minLines="5"
+                android:maxLines="10"
+                android:scrollbars="vertical"
+                android:background="@drawable/custom_edittext"
+                android:textSize="15dp"
+                android:padding="12dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Image"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"/>
+            <Button
+                android:id="@+id/buttonSelectImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose File"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:textAllCaps="false"
+                android:gravity="start|center_vertical"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"/>
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="12dp"
+                android:background="@drawable/custom_edittext"
+                android:entries="@array/dropdown_items" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:backgroundTint="@color/primary"
+            android:backgroundTintMode="add"
+            android:padding="15dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:text="Post"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

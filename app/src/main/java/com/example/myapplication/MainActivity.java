@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         profileFragment = new ProfileFragment();
 
         defaultTextColor = Color.BLACK;
-        selectedTextColor = Color.parseColor("#B99DBFE3");
+        selectedTextColor = Color.parseColor("#195FBA");
 
         setButtonState(btn_explore, tv_explore, true);
         getSupportFragmentManager()
