@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         setButtonState(btn_add, tv_add, false);
         setButtonState(btn_chats, tv_chats, false);
         setButtonState(btn_profile, tv_profile, false);
+        setButtonState(btn_search, tv_search, false);
     }
 
     private void navigateToLogin() {

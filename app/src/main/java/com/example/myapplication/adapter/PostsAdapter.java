@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
@@ -52,10 +53,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         }
         if (posts.getUser() != null) {
             holder.userNameTextView.setText(posts.getUser().getUsername());
-            Glide.with(holder.itemView.getContext())
-                    .load(posts.getUser().getProfileImage())
-                    .into(holder.userImage);
+            String profileImage = posts.getUser().getProfileImage();
+
+            if (profileImage != null && !profileImage.isEmpty()) {
+                Glide.with(holder.itemView.getContext())
+                        .load(profileImage)
+                        .error(R.drawable.baseline_account_circle_24) // Gambar default jika terjadi kesalahan saat memuat
+                        .into(holder.userImage);
+            } else {
+                holder.userImage.setImageResource(R.drawable.baseline_account_circle_24); // Gambar default jika URL kosong atau null
+            }
         }
+
+
         Glide.with(holder.itemView.getContext())
                 .load(posts.getImage())
                 .into(holder.postImageView);
