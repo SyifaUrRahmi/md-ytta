@@ -5,29 +5,26 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.fragment.AddFragment;
 import com.example.myapplication.fragment.ChatsFragment;
 import com.example.myapplication.fragment.HomeFragment;
 import com.example.myapplication.fragment.ProfileFragment;
+import com.example.myapplication.fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton btn_explore, btn_add, btn_chats, btn_profile;
-    private TextView tv_explore, tv_add, tv_chats, tv_profile;
+    private ImageButton btn_explore, btn_add, btn_chats, btn_profile, btn_search;
+    private TextView tv_explore, tv_add, tv_chats, tv_profile, tv_search;
     private HomeFragment homeFragment;
     private AddFragment addFragment;
     private ChatsFragment chatsFragment;
     private ProfileFragment profileFragment;
+    private SearchFragment searchFragment;
     private int defaultTextColor;
     private int selectedTextColor;
 
@@ -40,17 +37,20 @@ public class MainActivity extends AppCompatActivity {
             navigateToLogin();
         }
         btn_explore = findViewById(R.id.btn_explore);
+        btn_search = findViewById(R.id.btn_search);
         btn_add = findViewById(R.id.btn_add);
         btn_chats = findViewById(R.id.btn_chats);
         btn_profile = findViewById(R.id.btn_profile);
 
         tv_explore = findViewById(R.id.tv_explore);
+        tv_search = findViewById(R.id.tv_search);
         tv_add = findViewById(R.id.tv_add);
         tv_chats = findViewById(R.id.tv_chats);
         tv_profile = findViewById(R.id.tv_profile);
 
 
         homeFragment = new HomeFragment();
+        searchFragment = new SearchFragment();
         addFragment = new AddFragment();
         chatsFragment = new ChatsFragment();
         profileFragment = new ProfileFragment();
@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
             resetButtonStates();
             setButtonState(btn_explore, tv_explore, true);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+        });
+        btn_search.setOnClickListener(view -> {
+            resetButtonStates();
+            setButtonState(btn_search, tv_search, true);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
         });
         btn_add.setOnClickListener(view -> {
             resetButtonStates();

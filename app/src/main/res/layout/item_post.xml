@@ -30,7 +30,8 @@
     <ImageView
         android:id="@+id/iv_post_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="250dp"
+        android:background="#A8A8B6"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
