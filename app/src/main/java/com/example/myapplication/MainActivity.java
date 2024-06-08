@@ -3,12 +3,14 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.myapplication.fragment.AddFragment;
 import com.example.myapplication.fragment.ChatsFragment;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
 
         if (!isLoggedIn()) {
             navigateToLogin();
@@ -47,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         tv_add = findViewById(R.id.tv_add);
         tv_chats = findViewById(R.id.tv_chats);
         tv_profile = findViewById(R.id.tv_profile);
-
 
         homeFragment = new HomeFragment();
         searchFragment = new SearchFragment();
@@ -94,11 +96,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setButtonState(ImageButton button, TextView textView, boolean isSelected) {
-        int backgroundDrawable = isSelected ? R.drawable.bg_button_click : R.drawable.bg_button_default;
         int textColor = isSelected ? selectedTextColor : defaultTextColor;
+        int backgroundDrawable = isSelected ? R.drawable.bg_button_click : R.drawable.bg_button_default;
+        int textStyle = isSelected ? Typeface.BOLD : Typeface.NORMAL;
 
         button.setBackgroundResource(backgroundDrawable);
         textView.setTextColor(textColor);
+        textView.setTypeface(null, textStyle);
     }
 
     private void resetButtonStates() {
