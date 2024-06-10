@@ -1,10 +1,9 @@
 package com.example.myapplication.model;
 
-
 public class LoginResponse {
     private boolean success;
     private String error;
-    private String token;
+    private String userId;
 
     public boolean isSuccess() {
         return success;
@@ -22,12 +21,11 @@ public class LoginResponse {
         this.error = error;
     }
 
-    public String getToken() {
-        return token;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
-

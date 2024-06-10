@@ -1,7 +1,6 @@
 package com.example.myapplication.adapter;
 
-import android.content.Context;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Posts;
-import com.example.myapplication.model.PostsResponse;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Objects;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
     private List<Posts> postsList;
 
-    public PostsAdapter(PostsResponse postsResponse) {
-        this.postsList = postsResponse.getPosts();
+    public PostsAdapter(List<Posts> postsList) {
+        this.postsList = postsList;
         notifyDataSetChanged();
     }
 
@@ -44,28 +40,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         holder.titleTextView.setText(posts.getTitle());
         holder.descriptionTextView.setText(posts.getDescription());
 
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm");
         try {
-            holder.dateTextView.setText(outputFormat.format(inputFormat.parse(posts.getCreatedAt())));
+            holder.dateTextView.setText(outputFormat.format(inputFormat.parse(posts.getUpdatedAt())));
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
         if (posts.getUser() != null) {
             holder.userNameTextView.setText(posts.getUser().getUsername());
-            String profileImage = posts.getUser().getProfileImage();
-
-            if (profileImage != null && !profileImage.isEmpty()) {
+            if (posts.getUser().getProfileImage() != null && !posts.getUser().getProfileImage().isEmpty()) {
                 Glide.with(holder.itemView.getContext())
-                        .load(profileImage)
-                        .error(R.drawable.baseline_account_circle_24) // Gambar default jika terjadi kesalahan saat memuat
+                        .load(posts.getUser().getProfileImage())
                         .into(holder.userImage);
             } else {
-                holder.userImage.setImageResource(R.drawable.baseline_account_circle_24); // Gambar default jika URL kosong atau null
+                holder.userImage.setImageResource(R.drawable.baseline_account_circle_24);
             }
         }
-
-
         Glide.with(holder.itemView.getContext())
                 .load(posts.getImage())
                 .into(holder.postImageView);
