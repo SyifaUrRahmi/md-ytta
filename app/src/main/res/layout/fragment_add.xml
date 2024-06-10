@@ -67,15 +67,30 @@
                 android:textColor="@color/black"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="10dp"/>
-            <Button
-                android:id="@+id/buttonSelectImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Choose File"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:textAllCaps="false"
-                android:gravity="start|center_vertical"/>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="0.1dp"
+                    >
+                    <ImageView
+                        android:id="@+id/selectImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_image_24"/>
+                </com.google.android.material.card.MaterialCardView>
+<!--            <Button-->
+<!--                android:id="@+id/buttonSelectImage"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Choose File"-->
+<!--                android:background="@drawable/custom_edittext"-->
+<!--                android:padding="12dp"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:gravity="start|center_vertical"/>-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +110,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_edittext"

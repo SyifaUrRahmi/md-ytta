@@ -17,11 +17,21 @@ import com.example.myapplication.fragment.ChatsFragment;
 import com.example.myapplication.fragment.HomeFragment;
 import com.example.myapplication.fragment.ProfileFragment;
 import com.example.myapplication.fragment.SearchFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton btn_explore, btn_add, btn_chats, btn_profile, btn_search;
-    private TextView tv_explore, tv_add, tv_chats, tv_profile, tv_search;
+    public ImageButton btn_explore;
+    public ImageButton btn_add;
+    private ImageButton btn_chats;
+    private ImageButton btn_profile;
+    private ImageButton btn_search;
+    public TextView tv_explore;
+    public TextView tv_add;
+    private TextView tv_chats;
+    private TextView tv_profile;
+    private TextView tv_search;
     private HomeFragment homeFragment;
     private AddFragment addFragment;
     private ChatsFragment chatsFragment;
@@ -36,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
 
-        if (!isLoggedIn()) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser == null) {
             navigateToLogin();
         }
         btn_explore = findViewById(R.id.btn_explore);
@@ -95,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setButtonState(ImageButton button, TextView textView, boolean isSelected) {
+    public void setButtonState(ImageButton button, TextView textView, boolean isSelected) {
         int textColor = isSelected ? selectedTextColor : defaultTextColor;
         int backgroundDrawable = isSelected ? R.drawable.bg_button_click : R.drawable.bg_button_default;
         int textStyle = isSelected ? Typeface.BOLD : Typeface.NORMAL;
@@ -107,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetButtonStates() {
         setButtonState(btn_explore, tv_explore, false);
+        setButtonState(btn_search, tv_search, false);
         setButtonState(btn_add, tv_add, false);
         setButtonState(btn_chats, tv_chats, false);
         setButtonState(btn_profile, tv_profile, false);
@@ -119,10 +132,4 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean isLoggedIn() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", null);
-        Log.d("MainActivity", "Token: " + token); // Debugging: cek nilai token
-        return token != null;
-    }
 }

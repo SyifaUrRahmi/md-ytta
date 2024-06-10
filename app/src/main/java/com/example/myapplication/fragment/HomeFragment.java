@@ -20,6 +20,7 @@ import com.example.myapplication.model.Posts;
 import com.example.myapplication.model.PostsResponse;
 import com.example.myapplication.model.User;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -51,9 +52,11 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     PostsResponse postsResponse = response.body();
-                    postsAdapter = new PostsAdapter(postsResponse);
-                    recyclerView.setAdapter(postsAdapter);
+
                     List<Posts> posts = postsResponse.getPosts();
+                    Collections.sort(posts, (post1, post2) -> post2.getUpdatedAt().compareTo(post1.getUpdatedAt()));
+                    postsAdapter = new PostsAdapter(posts);
+                    recyclerView.setAdapter(postsAdapter);
                     for (Posts post : posts) {
                         fetchUserForPost(post);
                     }
