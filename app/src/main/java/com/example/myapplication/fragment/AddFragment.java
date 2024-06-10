@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +63,10 @@ public class AddFragment extends Fragment {
                         Uri imageUri = result.getData().getData();
                         if (imageUri != null) {
                             selectImage.setImageURI(imageUri);
+                            ViewGroup.LayoutParams params = selectImage.getLayoutParams();
+                            params.height = convertDpToPixel(300);
+                            selectImage.setLayoutParams(params);
+                            selectImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             try {
                                 bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
                             } catch (IOException e) {
@@ -171,5 +176,9 @@ public class AddFragment extends Fragment {
                 Toast.makeText(getActivity(), "Failed to upload post", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public int convertDpToPixel(float dp) {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        return (int) (dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 }

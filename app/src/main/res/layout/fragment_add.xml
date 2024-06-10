@@ -79,7 +79,7 @@
                     <ImageView
                         android:id="@+id/selectImage"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="100dp"
                         android:src="@drawable/baseline_image_24"/>
                 </com.google.android.material.card.MaterialCardView>
 <!--            <Button-->
