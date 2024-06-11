@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,12 +47,31 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    private boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
     private void registerUser() {
         String username = usernameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
         String city = cityEditText.getText().toString().trim();
+
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || city.isEmpty()) {
+            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Invalid email address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.length() < 8) {
+            Toast.makeText(this, "Password must be at least 8 characters long", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (password.equals(confirmPassword)) {
             RegisterRequest registerRequest = new RegisterRequest(username, email, password, confirmPassword, city);
@@ -60,8 +80,6 @@ public class RegisterActivity extends AppCompatActivity {
             Call<RegisterResponse> call = apiService.registerUser(registerRequest);
 
             call.enqueue(new Callback<RegisterResponse>() {
-
-
                 @Override
                 public void onResponse(Call<RegisterResponse> call, retrofit2.Response<RegisterResponse> response) {
                     if (response.isSuccessful()) {

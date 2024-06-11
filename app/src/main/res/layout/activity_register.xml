@@ -46,8 +46,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
                 android:hint="Username"
-                android:textSize="12dp"
-                android:padding="15dp" />
+                android:textSize="15dp"
+                android:padding="12dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,30 +84,43 @@
 <!--                android:text="Password"-->
 <!--                android:textColor="@color/black"-->
 <!--                android:layout_marginTop="10dp"/>-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:endIconMode="password_toggle"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="15dp"
+                app:hintEnabled="false"
                 style="@style/TextInputLayoutNoUnderline">
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:endIconMode="password_toggle"
                     android:background="@drawable/custom_edittext"
                     android:hint="Password"
-                    android:id="@+id/et_password"
-                    android:textSize="15dp"
                     android:padding="12dp"
-                    android:inputType="textPassword"/>
+                    android:id="@+id/et_password"
+                    android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:endIconMode="password_toggle"
-                android:layout_marginTop="10dp"
+                app:hintEnabled="false"
                 style="@style/TextInputLayoutNoUnderline">
 
                 <EditText
@@ -115,7 +128,6 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_edittext"
                     android:hint="Confirm password"
-                    android:textSize="15dp"
                     android:padding="12dp"
                     android:id="@+id/et_confirm_password"
                     android:inputType="textPassword" />

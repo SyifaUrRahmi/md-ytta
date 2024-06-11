@@ -72,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         defaultTextColor = Color.BLACK;
         selectedTextColor = Color.parseColor("#195FBA");
 
+        String fragmentToLoad = getIntent().getStringExtra("fragment_to_load");
+        if (fragmentToLoad != null && fragmentToLoad.equals("home")) {
+            getSupportFragmentManager().beginTransaction()
+                    .attach(homeFragment)
+                    .commit();
+        }
+
         setButtonState(btn_explore, tv_explore, true);
         getSupportFragmentManager()
                 .beginTransaction()

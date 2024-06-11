@@ -7,9 +7,9 @@ import java.util.List;
 
 public class PostsResponse {
     @SerializedName("posts")
-    private List<Posts> posts;
+    private List<Post> posts;
 
-    public List<Posts> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 }
