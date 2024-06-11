@@ -2,7 +2,7 @@ package com.example.myapplication.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Posts {
+public class Post {
     @SerializedName("userId")
     private String userId;
 
@@ -26,6 +26,8 @@ public class Posts {
 
     @SerializedName("status")
     private String status;
+    @SerializedName("type")
+    private String type;
 
     private User user;
     public String getUserId() {
@@ -90,6 +92,14 @@ public class Posts {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public User getUser() {

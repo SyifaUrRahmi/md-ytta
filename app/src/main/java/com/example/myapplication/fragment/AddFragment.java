@@ -45,7 +45,7 @@ public class AddFragment extends Fragment {
 
 
     private EditText etTitle, etDescription;
-    private Spinner spinner;
+    private Spinner status, type;
     private Button btnPost;
     private ImageView selectImage;
     private Bitmap bitmap;
@@ -88,7 +88,8 @@ public class AddFragment extends Fragment {
 
         etTitle = view.findViewById(R.id.et_title);
         etDescription = view.findViewById(R.id.et_description);
-        spinner = view.findViewById(R.id.spinner);
+        status = view.findViewById(R.id.status);
+        type = view.findViewById(R.id.type);
         selectImage = view.findViewById(R.id.selectImage);
         btnPost = view.findViewById(R.id.btn_post);
 
@@ -115,7 +116,8 @@ public class AddFragment extends Fragment {
     private void resetData() {
         etTitle.setText("");
         etDescription.setText("");
-        spinner.setSelection(0);
+        status.setSelection(0);
+        type.setSelection(0);
         resetImage();
     }
 
@@ -130,9 +132,10 @@ public class AddFragment extends Fragment {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String title = etTitle.getText().toString().trim();
         String description = etDescription.getText().toString().trim();
-        String status = spinner.getSelectedItem().toString();
+        String sts = status.getSelectedItem().toString();
+        String tipe = type.getSelectedItem().toString();
 
-        if (title.isEmpty() || description.isEmpty() || status.isEmpty() || bitmap == null ) {
+        if (title.isEmpty() || description.isEmpty() || sts.isEmpty() || tipe.isEmpty() || bitmap == null ) {
             Toast.makeText(getActivity(), "Please fill in all fields and select an image", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -147,12 +150,13 @@ public class AddFragment extends Fragment {
 
         RequestBody requestBodyTitle = RequestBody.create(MediaType.parse("multipart/form-data"), title);
         RequestBody requestBodyDescription = RequestBody.create(MediaType.parse("multipart/form-data"), description);
-        RequestBody requestBodyStatus = RequestBody.create(MediaType.parse("multipart/form-data"), status);
+        RequestBody requestBodyStatus = RequestBody.create(MediaType.parse("multipart/form-data"), sts);
+        RequestBody requestBodyType = RequestBody.create(MediaType.parse("multipart/form-data"), tipe);
         RequestBody requestBodyImage = RequestBody.create(MediaType.parse("image/jpeg"), file);
         MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", file.getName(), requestBodyImage);
 
         APIService apiService = APIClient.getClient().create(APIService.class);
-        Call<ResponseBody> call = apiService.uploadPost(userId, requestBodyTitle, requestBodyDescription, requestBodyStatus, imagePart);
+        Call<ResponseBody> call = apiService.uploadPost(userId, requestBodyTitle, requestBodyDescription, requestBodyStatus, requestBodyType, imagePart);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

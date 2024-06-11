@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerVertical="true"
-    android:padding="30dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.AddFragment">
+    tools:context=".EditPostActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_margin="20dp"
         android:layout_centerVertical="true">
         <TextView
             android:layout_width="wrap_content"
@@ -67,21 +68,21 @@
                 android:textColor="@color/black"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="10dp"/>
-                <com.google.android.material.card.MaterialCardView
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/black"
+                app:strokeWidth="0.1dp"
+                >
+                <ImageView
+                    android:id="@+id/selectImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardElevation="0dp"
-                    app:strokeColor="@color/black"
-                    app:strokeWidth="0.1dp"
-                    >
-                    <ImageView
-                        android:id="@+id/selectImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:src="@drawable/baseline_image_24"/>
-                </com.google.android.material.card.MaterialCardView>
+                    android:src="@drawable/baseline_image_24"/>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -116,18 +117,42 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_post"
+        <LinearLayout
+            android:id="@+id/btn_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_edittext"
-            android:backgroundTint="@color/primary"
-            android:backgroundTintMode="add"
-            android:padding="15dp"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/white"
-            android:text="Post"
-            android:textAllCaps="false"/>
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edittext"
+                android:backgroundTint="@color/secondary"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:id="@+id/btn_save"
+                android:textColor="@color/white"
+                android:text="Save"
+                android:textAllCaps="false" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_edittext"
+                android:backgroundTint="#DF3E3E"
+                android:layout_marginHorizontal="10dp"
+                android:padding="15dp"
+                android:id="@+id/btn_cancel"
+                android:textColor="@color/white"
+                android:text="Cancel"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
