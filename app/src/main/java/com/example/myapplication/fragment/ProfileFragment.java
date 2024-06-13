@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.LoginActivity; // Pastikan untuk mengimpor aktivitas login Anda
+import com.example.myapplication.LoginActivity;
 import com.example.myapplication.fragment.profile_fragment.InterestsFragment;
 import com.example.myapplication.fragment.profile_fragment.PostsFragment;
 import com.example.myapplication.fragment.profile_fragment.TransactionsFragment;

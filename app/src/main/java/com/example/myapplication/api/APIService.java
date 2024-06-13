@@ -64,7 +64,7 @@ public interface APIService {
     @GET("/post/{postId}")
     Call<Post> getPost(@Path("postId") String postId);
 
-    @DELETE("{userId}/post/{postId}")
+    @DELETE("/{userId}/post/{postId}")
     Call<Void> deletePost(@Path("userId") String userId, @Path("postId") String postId);
 
 
