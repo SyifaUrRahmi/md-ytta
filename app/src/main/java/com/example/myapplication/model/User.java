@@ -2,6 +2,8 @@ package com.example.myapplication.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class User {
     @SerializedName("userId")
     private String userId;
@@ -17,6 +19,12 @@ public class User {
 
     @SerializedName("username")
     private String username;
+
+    @SerializedName("search_histories")
+    private List<String> searchHistories;
+
+    @SerializedName("interested_posts")
+    private List<String> interestedPosts;
 
     public String getUserId() {
         return userId;
@@ -56,6 +64,22 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<String> getSearchHistories() {
+        return searchHistories;
+    }
+
+    public void setSearchHistories(List<String> searchHistories) {
+        this.searchHistories = searchHistories;
+    }
+
+    public List<String> getInterestedPosts() {
+        return interestedPosts;
+    }
+
+    public void setInterestedPosts(List<String> interestedPosts) {
+        this.interestedPosts = interestedPosts;
     }
 }
 

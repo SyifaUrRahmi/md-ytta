@@ -38,9 +38,9 @@ import retrofit2.Response;
 
 public class DetailPostActivity extends AppCompatActivity {
     private static final int EDIT_POST_REQUEST_CODE = 1001;
-    private ImageView postImageView;
+    private ImageView postImageView, btnInterest;
     private ImageButton btnClose;
-    private TextView titleTextView, dateTextView, descriptionTextView, statusTextView, typeTextView;
+    private TextView titleTextView, dateTextView, descriptionTextView, statusTextView, typeTextView, tvInterestCount;
     private Button btnDeal, btnEdit, btnDelete;
     private LinearLayout button;
     private String postId, userId;
@@ -68,6 +68,8 @@ public class DetailPostActivity extends AppCompatActivity {
         btnEdit = findViewById(R.id.btn_edit);
         button = findViewById(R.id.btn_update);
         btnClose = findViewById(R.id.btn_close);
+        btnInterest = findViewById(R.id.btn_interest);
+        tvInterestCount = findViewById(R.id.tv_interest_count);
 
         postId = getIntent().getStringExtra("postId");
         userId = getIntent().getStringExtra("userId");
@@ -114,11 +116,9 @@ public class DetailPostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_POST_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            // Lakukan refresh tampilan post
             String updatedPostId = data.getStringExtra("updatedPostId");
             if (updatedPostId != null && updatedPostId.equals(postId)) {
-                // Jika post yang diperbarui adalah post yang sedang ditampilkan
-                fetchPostDetails(postId); // Perbarui detail post
+                fetchPostDetails(postId);
             }
         }
     }
@@ -155,6 +155,7 @@ public class DetailPostActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
         descriptionTextView.setText(post.getDescription());
+        tvInterestCount.setText(String.valueOf(post.getInterestCount()));
         statusTextView.setText(post.getStatus());
         typeTextView.setText(post.getType());
 

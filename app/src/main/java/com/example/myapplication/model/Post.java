@@ -28,6 +28,8 @@ public class Post {
     private String status;
     @SerializedName("type")
     private String type;
+    @SerializedName("interest_count")
+    private int interest_count;
 
     private User user;
     public String getUserId() {
@@ -100,6 +102,13 @@ public class Post {
 
     public void setType(String type) {
         this.type = type;
+    }
+    public int getInterestCount() {
+        return interest_count;
+    }
+
+    public void setInterestCount(int interest_count) {
+        this.interest_count = interest_count;
     }
 
     public User getUser() {

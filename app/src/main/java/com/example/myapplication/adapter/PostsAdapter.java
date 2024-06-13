@@ -46,6 +46,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         Post posts = postsList.get(position);
         holder.titleTextView.setText(posts.getTitle());
         holder.descriptionTextView.setText(posts.getDescription());
+        holder.tv_interest_count.setText(String.valueOf(posts.getInterestCount()));
 
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm");
@@ -88,8 +89,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         notifyItemRangeInserted(startPosition, newPosts.size());
     }
     public static class PostViewHolder extends RecyclerView.ViewHolder {
-        ImageView postImageView, userImage;
-        TextView titleTextView, descriptionTextView, userNameTextView, dateTextView;
+        ImageView postImageView, userImage, btn_interest;
+        TextView titleTextView, descriptionTextView, userNameTextView, dateTextView, tv_interest_count;
         LinearLayout post_content;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -101,6 +102,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             userNameTextView = itemView.findViewById(R.id.tv_username);
             userImage = itemView.findViewById(R.id.iv_user_profile);
             post_content = itemView.findViewById(R.id.post_content);
+            tv_interest_count = itemView.findViewById(R.id.tv_interest_count);
+            btn_interest = itemView.findViewById(R.id.btn_interest);
         }
     }
 }
