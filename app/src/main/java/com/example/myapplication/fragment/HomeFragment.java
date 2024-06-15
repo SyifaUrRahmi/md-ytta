@@ -2,6 +2,7 @@ package com.example.myapplication.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.example.myapplication.model.Post;
 import com.example.myapplication.model.PostsResponse;
 import com.example.myapplication.model.User;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +39,10 @@ public class HomeFragment extends Fragment {
 
     private ProgressBar progressBar;
     private LinearLayout noInternetLayout;
+    private Button btnLoadMore;
     private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int currentPage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,8 +52,20 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rv_posts);
         progressBar = view.findViewById(R.id.progress_bar);
         noInternetLayout = view.findViewById(R.id.no_internet_layout);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        btnLoadMore = view.findViewById(R.id.btn_load_more);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        postsAdapter = new PostsAdapter(getContext(), new ArrayList<>());
+        recyclerView.setAdapter(postsAdapter);
+
+        btnLoadMore.setOnClickListener(v -> {
+            if (!isLoading && !isLastPage) {
+                fetchPosts();
+            }
+        });
+
+        currentPage = 1;
         noInternetLayout.setOnClickListener(v -> {
             if (NetworkUtil.isConnected(getContext())) {
                 fetchPosts();
@@ -66,22 +84,36 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchPosts() {
+        isLoading = true;
         showLoading(true);
         APIService apiService = APIClient.getClient().create(APIService.class);
-        Call<PostsResponse> call = apiService.getPosts();
+        Call<PostsResponse> call = apiService.getPosts(currentPage, 10);
 
         call.enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
+                isLoading = false;
+                showLoading(false);
                 if (response.isSuccessful() && response.body() != null) {
-                    showLoading(false);
                     PostsResponse postsResponse = response.body();
 
-                    List<Post> posts = postsResponse.getPosts();
-                    Collections.sort(posts, (post1, post2) -> post2.getUpdatedAt().compareTo(post1.getUpdatedAt()));
-                    postsAdapter = new PostsAdapter(getContext(), posts);
-                    recyclerView.setAdapter(postsAdapter);
-                    for (Post post : posts) {
+                    List<Post> newPosts = postsResponse.getPosts();
+
+                    if (currentPage == 1) {
+                        postsAdapter.setPosts(newPosts);
+                    } else {
+                        postsAdapter.addPosts(newPosts);
+                    }
+
+                    if (newPosts.isEmpty()) {
+                        isLastPage = true;
+                        btnLoadMore.setVisibility(View.GONE);
+                    } else {
+                        currentPage++;
+                        btnLoadMore.setVisibility(View.VISIBLE);
+                    }
+
+                    for (Post post : newPosts) {
                         fetchUserForPost(post);
                     }
                 } else {
@@ -91,11 +123,12 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
+                isLoading = false;
+                showLoading(false);
                 Toast.makeText(getContext(), "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 
     private void fetchUserForPost(Post post) {
         APIService apiService = APIClient.getClient().create(APIService.class);
@@ -120,19 +153,14 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void showLoading(boolean isLoading) {
-        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-        noInternetLayout.setVisibility(View.GONE);
-    }
-
     private void showNoInternetConnection() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
         noInternetLayout.setVisibility(View.VISIBLE);
     }
 
-
+    private void showLoading(boolean isLoading) {
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        noInternetLayout.setVisibility(View.GONE);
+    }
 }
-
-
