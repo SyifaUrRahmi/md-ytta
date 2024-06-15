@@ -27,10 +27,12 @@ import com.example.myapplication.api.APIClient;
 import com.example.myapplication.api.APIService;
 import com.example.myapplication.fragment.HomeFragment;
 import com.example.myapplication.model.Post;
+import com.example.myapplication.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,12 +40,14 @@ import retrofit2.Response;
 
 public class DetailPostActivity extends AppCompatActivity {
     private static final int EDIT_POST_REQUEST_CODE = 1001;
-    private ImageView postImageView;
+    private ImageView postImageView, btnInterest;
     private ImageButton btnClose;
-    private TextView titleTextView, dateTextView, descriptionTextView, statusTextView, typeTextView;
+    private TextView titleTextView, dateTextView, descriptionTextView, statusTextView, typeTextView, tvInterestCount;
     private Button btnDeal, btnEdit, btnDelete;
     private LinearLayout button;
     private String postId, userId;
+    private String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,24 +72,81 @@ public class DetailPostActivity extends AppCompatActivity {
         btnEdit = findViewById(R.id.btn_edit);
         button = findViewById(R.id.btn_update);
         btnClose = findViewById(R.id.btn_close);
+        btnInterest = findViewById(R.id.btn_interest);
+        tvInterestCount = findViewById(R.id.tv_interest_count);
 
         postId = getIntent().getStringExtra("postId");
         userId = getIntent().getStringExtra("userId");
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        Log.d("uid", uId);
-        Log.d("userId", userId);
 
-        if (userId.equals(uId)){
-            button.setVisibility(View.VISIBLE);
-            btnDeal.setVisibility(View.GONE);
-        }else {
-            button.setVisibility(View.GONE);
-            btnDeal.setVisibility(View.VISIBLE);
-        }
 
         if (postId != null) {
             fetchPostDetails(postId);
+            Call<User> call = APIClient.getClient().create(APIService.class).getUser(uId);
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.isSuccessful()) {
+                        User user = response.body();
+                        if (user != null) {
+                            List<String> interestPosts = user.getInterestedPosts();
+                            if (interestPosts.contains(postId)) {
+                                btnInterest.setImageResource(R.drawable.baseline_favorite_24);
+                                btnInterest.setOnClickListener(view -> {
+                                    Call<Void> unInterest = APIClient.getClient().create(APIService.class).markunInterest(uId, postId);
+                                    unInterest.enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            if (response.isSuccessful()) {
+                                                btnInterest.setImageResource(R.drawable.baseline_favorite_border_24);
+
+                                            } else {
+                                                Toast.makeText(DetailPostActivity.this, "Failed to mark interest", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+                                            Toast.makeText(DetailPostActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                });
+                            } else {
+                                btnInterest.setImageResource(R.drawable.baseline_favorite_border_24);
+                                btnInterest.setOnClickListener(view -> {
+                                    Call<Void> interest = APIClient.getClient().create(APIService.class).markInterest(uId, postId);
+                                    interest.enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            if (response.isSuccessful()) {
+                                                btnInterest.setImageResource(R.drawable.baseline_favorite_24);
+
+                                            } else {
+                                                Toast.makeText(DetailPostActivity.this, "Failed to mark interest", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+                                            Toast.makeText(DetailPostActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                });
+                            }
+                        }
+                    } else {
+                        Toast.makeText(DetailPostActivity.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Toast.makeText(DetailPostActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         } else {
             Toast.makeText(this, "Invalid post ID", Toast.LENGTH_SHORT).show();
             finish();
@@ -114,11 +175,9 @@ public class DetailPostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_POST_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            // Lakukan refresh tampilan post
             String updatedPostId = data.getStringExtra("updatedPostId");
             if (updatedPostId != null && updatedPostId.equals(postId)) {
-                // Jika post yang diperbarui adalah post yang sedang ditampilkan
-                fetchPostDetails(postId); // Perbarui detail post
+                fetchPostDetails(postId);
             }
         }
     }
@@ -155,12 +214,28 @@ public class DetailPostActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
         descriptionTextView.setText(post.getDescription());
+        tvInterestCount.setText(String.valueOf(post.getInterestCount()));
         statusTextView.setText(post.getStatus());
         typeTextView.setText(post.getType());
 
         Glide.with(this)
                 .load(post.getImage())
                 .into(postImageView);
+
+        if (userId.equals(uId)){
+            if(post.getStatus().equals("Selesai")){
+                button.setVisibility(View.GONE);
+                btnDeal.setVisibility(View.GONE);
+
+            }else {
+                button.setVisibility(View.VISIBLE);
+                btnDeal.setVisibility(View.GONE);
+            }
+        }else {
+            button.setVisibility(View.GONE);
+            btnDeal.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void showDeleteConfirmationDialog(String userId, String postId) {

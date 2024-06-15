@@ -14,27 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.LoginActivity; // Pastikan untuk mengimpor aktivitas login Anda
-import com.example.myapplication.adapter.PostsAdapter;
-import com.example.myapplication.api.APIClient;
-import com.example.myapplication.api.APIService;
 import com.example.myapplication.fragment.profile_fragment.InterestsFragment;
 import com.example.myapplication.fragment.profile_fragment.PostsFragment;
 import com.example.myapplication.fragment.profile_fragment.TransactionsFragment;
-import com.example.myapplication.model.Post;
-import com.example.myapplication.model.PostsResponse;
-import com.example.myapplication.model.User;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Collections;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class ProfileFragment extends Fragment {
 
     LinearLayout layout_posts, layout_interests, layout_transactions;
@@ -42,9 +27,6 @@ public class ProfileFragment extends Fragment {
     PostsFragment postsFragment;
     InterestsFragment interestsFragment;
     TransactionsFragment transactionsFragment;
-
-    ImageView iv_profile;
-    TextView tv_username, tv_city, tv_email;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -61,14 +43,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        iv_profile = view.findViewById(R.id.iv_user_profile);
-        tv_username = view.findViewById(R.id.tv_username);
-        tv_email = view.findViewById(R.id.tv_email);
-        tv_city = view.findViewById(R.id.tv_city);
-
-
-        fetchProfile();
 
         layout_posts = view.findViewById(R.id.layout_posts);
         layout_interests = view.findViewById(R.id.layout_interests);
@@ -110,34 +84,6 @@ public class ProfileFragment extends Fragment {
 
         return view;
 
-    }
-
-    private void fetchProfile() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        APIService apiService = APIClient.getClient().create(APIService.class);
-        Call<User> call = apiService.getUser(userId);
-
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    User user = response.body();
-                    tv_username.setText(user.getUsername());
-                    tv_email.setText(user.getEmail());
-                    tv_city.setText(user.getCity());
-
-                    Glide.with(getActivity())
-                            .load(user.getProfileImage())
-                            .into(iv_profile);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
-            }
-        });
     }
 
     private void logout() {

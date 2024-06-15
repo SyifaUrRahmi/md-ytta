@@ -53,6 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1">
                     <TextView
                         android:id="@+id/tv_title"
@@ -67,15 +68,25 @@
                         />
 
                 </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:text="0"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/tv_interest_count"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/btn_interest"
                     android:src="@drawable/baseline_favorite_border_24"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_description"
                 android:layout_marginTop="12dp"
                 android:layout_width="match_parent"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"/>
         </LinearLayout>
