@@ -22,6 +22,8 @@
 
     </LinearLayout>
 
+
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
@@ -33,15 +35,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/top"
+        android:id="@+id/scrollview"
+
         >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_posts"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_post"
-            android:nestedScrollingEnabled="true"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_posts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_post"
+                android:nestedScrollingEnabled="false"/>
+
+            <Button
+                android:id="@+id/btn_load_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Load More"
+                android:visibility="gone"/>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
@@ -65,4 +82,13 @@
             android:textSize="18sp"
             android:layout_marginTop="16dp"/>
     </LinearLayout>
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_load_more"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:text="Load More"-->
+<!--        android:visibility="gone" />-->
 </RelativeLayout>

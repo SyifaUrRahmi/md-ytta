@@ -33,8 +33,8 @@ public interface APIService {
     @POST("/login")
     Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
 
-    @GET("/posts")
-    Call<PostsResponse> getPosts();
+    @GET("/page/posts")
+    Call<PostsResponse> getPosts(@Query("page") int page, @Query("size") int size);
 
     @GET("/user/{userId}")
     Call<User> getUser(@Path("userId") String userId);
@@ -64,9 +64,19 @@ public interface APIService {
     @GET("/post/{postId}")
     Call<Post> getPost(@Path("postId") String postId);
 
-    @DELETE("/{userId}/post/{postId}")
+    @DELETE("/{userId}/delete/{postId}")
     Call<Void> deletePost(@Path("userId") String userId, @Path("postId") String postId);
 
+    @POST("/{userId}/post/{postId}/interest")
+    Call<Void> markInterest(
+            @Path("userId") String userId,
+            @Path("postId") String postId
+    );
+    @POST("/{userId}/post/{postId}/uninterest")
+    Call<Void> markunInterest(
+            @Path("userId") String userId,
+            @Path("postId") String postId
+    );
 
 }
 
