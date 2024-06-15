@@ -10,8 +10,6 @@ import com.example.myapplication.model.RegisterRequest;
 import com.example.myapplication.model.RegisterResponse;
 import com.example.myapplication.model.User;
 
-import java.util.List;
-
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -77,6 +75,9 @@ public interface APIService {
             @Path("userId") String userId,
             @Path("postId") String postId
     );
+
+    @GET("/user/{userId}/posts")
+    Call<PostsResponse> getMyPost(@Path("userId") String userId);
 
 }
 
