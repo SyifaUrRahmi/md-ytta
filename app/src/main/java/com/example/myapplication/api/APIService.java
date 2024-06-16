@@ -31,6 +31,16 @@ public interface APIService {
     @POST("/login")
     Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
 
+    @Multipart
+    @PUT("/{userId}/profile")
+    Call<ResponseBody> editProfile(
+            @Path("userId") String userId,
+            @Part("username") RequestBody username,
+            @Part("city") RequestBody city,
+            @Part("email") RequestBody email,
+            @Part MultipartBody.Part image
+    );
+
     @GET("/page/posts")
     Call<PostsResponse> getPosts(@Query("page") int page, @Query("size") int size);
 
