@@ -1,20 +1,28 @@
 package com.example.myapplication.fragment;
 
+import static com.example.myapplication.R.id.*;
+
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.EditProfileActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.LoginActivity; // Pastikan untuk mengimpor aktivitas login Anda
 import com.example.myapplication.api.APIClient;
@@ -37,7 +45,7 @@ public class ProfileFragment extends Fragment {
     InterestsFragment interestsFragment;
     TransactionsFragment transactionsFragment;
 
-    ImageView iv_profile;
+    ImageView iv_profile, popup_menu;
     TextView tv_username, tv_city, tv_email;
 
     public ProfileFragment() {
@@ -60,6 +68,7 @@ public class ProfileFragment extends Fragment {
         tv_username = view.findViewById(R.id.tv_username);
         tv_email = view.findViewById(R.id.tv_email);
         tv_city = view.findViewById(R.id.tv_city);
+        popup_menu = view.findViewById(R.id.popup_menu);
         
         fetchProfile();
         
@@ -93,16 +102,51 @@ public class ProfileFragment extends Fragment {
             getChildFragmentManager().beginTransaction().replace(R.id.fragment_container, transactionsFragment).commit();
         });
 
-        ImageView lg = view.findViewById(R.id.logout); // Pastikan ID ini sesuai dengan layout Anda
-        lg.setOnClickListener(new View.OnClickListener() {
+        popup_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                showPopupMenu(v);
             }
         });
 
         return view;
 
+    }
+
+    private void showPopupMenu(View v) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @SuppressLint("NonConstantResourceId")
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.action_edit_profile) {
+                    Intent toEditProfile = new Intent(getActivity(), EditProfileActivity.class);
+                    startActivity(toEditProfile);
+                    return true;
+                } else if (id == R.id.action_logout) {
+                    showLogoutConfirmation();
+                    return true;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void showLogoutConfirmation() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        logout();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(R.drawable.baseline_arrow_forward_24)
+                .show();
     }
 
     private void fetchProfile() {
