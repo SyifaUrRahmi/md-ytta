@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -86,6 +88,10 @@ public class EditPostActivity extends AppCompatActivity {
                         Uri selectedImageUri = result.getData().getData();
                         if (selectedImageUri != null) {
                             selectImageView.setImageURI(selectedImageUri);
+                            ViewGroup.LayoutParams params = selectImageView.getLayoutParams();
+                            params.height = convertDpToPixel(300);
+                            selectImageView.setLayoutParams(params);
+                            selectImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             try {
                                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                                 imageUri = selectedImageUri;
@@ -102,6 +108,11 @@ public class EditPostActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> updatePost());
 
         cancelButton.setOnClickListener(v -> finish());
+    }
+
+    private int convertDpToPixel(float dp) {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        return (int) (dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     private void openFileChooser() {

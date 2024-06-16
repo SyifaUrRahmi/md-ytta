@@ -6,8 +6,13 @@
     tools:context=".fragment.profile_fragment.TransactionsFragment">
 
     <TextView
+        android:id="@+id/tv_no_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragment Transactions" />
+        android:layout_height="wrap_content"
+        android:text="Belum ada data transaction"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"/>
 
 </FrameLayout>

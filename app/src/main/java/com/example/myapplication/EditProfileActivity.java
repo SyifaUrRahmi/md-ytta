@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -81,6 +83,10 @@ public class EditProfileActivity extends AppCompatActivity {
                         Uri selectedImageUri = result.getData().getData();
                         if (selectedImageUri != null) {
                             selectImage.setImageURI(selectedImageUri);
+//                            ViewGroup.LayoutParams params = selectImage.getLayoutParams();
+//                            params.height = convertDpToPixel(300);
+//                            selectImage.setLayoutParams(params);
+//                            selectImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             try {
                                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                                 imageUri = selectedImageUri;
@@ -190,11 +196,20 @@ public class EditProfileActivity extends AppCompatActivity {
                     .into(selectImage);
         } else {
             selectImage.setImageResource(R.drawable.baseline_image_24);
+            ViewGroup.LayoutParams params = selectImage.getLayoutParams();
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            selectImage.setLayoutParams(params);
+            selectImage.setScaleType(ImageView.ScaleType.CENTER);
         }
     }
 
     private void openFileChooser() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         imagePickerLauncher.launch(intent);
+    }
+
+    private int convertDpToPixel(float dp) {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        return (int) (dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 }

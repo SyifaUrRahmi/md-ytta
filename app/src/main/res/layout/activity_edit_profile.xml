@@ -86,12 +86,22 @@
                 android:textColor="@color/black"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="10dp"/>
-            <ImageView
-                android:id="@+id/selectImage"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/custom_edittext"
-                android:src="@drawable/baseline_image_24"/>
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/black"
+                app:strokeWidth="0.1dp"
+                >
+                <ImageView
+                    android:id="@+id/selectImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/baseline_image_24"/>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
         <LinearLayout

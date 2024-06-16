@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.MyPostsAdapter;
@@ -30,6 +31,8 @@ public class PostsFragment extends Fragment {
     private RecyclerView recyclerView;
     private MyPostsAdapter mypostsAdapter;
 
+    TextView tv_no_data;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class PostsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         recyclerView = view.findViewById(R.id.rv_posts);
+        tv_no_data = view.findViewById(R.id.tv_no_data);
         mypostsAdapter = new MyPostsAdapter(getContext(), new ArrayList<>());
         recyclerView.setAdapter(mypostsAdapter);
         fetchMyPosts();
@@ -61,8 +65,14 @@ public class PostsFragment extends Fragment {
                 PostsResponse postsResponse = response.body();
 
                 List<Post> newPosts = postsResponse.getPosts();
-
-                mypostsAdapter.setPosts(newPosts);
+                if (newPosts != null && !newPosts.isEmpty()) {
+                    mypostsAdapter.setPosts(newPosts);
+                    tv_no_data.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    tv_no_data.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
             }
 
             @Override

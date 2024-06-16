@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.DetailPostActivity;
@@ -31,6 +32,7 @@ import retrofit2.Response;
 public class InterestsFragment extends Fragment {
     private RecyclerView recyclerView;
     private InterestedPostsAdapter interestedpostsAdapter;
+    TextView tv_no_data;
 
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private String userId = currentUser.getUid();
@@ -45,6 +47,7 @@ public class InterestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_interests, container, false);
         recyclerView = view.findViewById(R.id.rv_posts);
+        tv_no_data = view.findViewById(R.id.tv_no_data);
         interestedpostsAdapter = new InterestedPostsAdapter(getContext(), new ArrayList<>());
         recyclerView.setAdapter(interestedpostsAdapter);
         getUser(userId);
@@ -59,9 +62,17 @@ public class InterestsFragment extends Fragment {
                 User user = response.body();
                 if (user != null) {
                     List<String> interestedPostIds = user.getInterestedPosts();
-                    for (String postId : interestedPostIds) {
-                        fetchInterestedPosts(postId);
+                    if (interestedPostIds != null && !interestedPostIds.isEmpty()) {
+                        for (String postId : interestedPostIds) {
+                            fetchInterestedPosts(postId);
+                        }
+                        tv_no_data.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    } else {
+                        tv_no_data.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                     }
+
                 }
             }
 
